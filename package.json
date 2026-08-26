@@ -1,0 +1,32 @@
+{
+  "name": "holy-clipboard",
+  "productName": "Holy Clipboard",
+  "version": "0.1.0",
+  "description": "A desktop tray app that watches the clipboard, classifies copied passwords, tokens, and sensitive notes as confessions, logs them in a journal, assigns penance tasks, and triggers a holy-water reset when the clipboard is cleared.",
+  "main": "dist/main/main.js",
+  "private": true,
+  "license": "MIT",
+  "author": {
+    "name": "The Order of the Clipboard",
+    "email": "confess@holyclipboard.dev"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "clean": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\"",
+    "copy:renderer": "node -e \"require('fs').cpSync('src/renderer', 'dist/renderer', { recursive: true })\"",
+    "build": "npm run clean && tsc -p tsconfig.json && npm run copy:renderer",
+    "watch": "tsc -w -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "start": "npm run build && electron .",
+    "dev": "concurrently -k -n tsc,app -c yellow,cyan \"npm:watch\" \"wait-on dist/main/main.js && npm run copy:renderer && electron .\""
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.30",
+    "concurrently": "^8.2.2",
+    "electron": "^29.2.0",
+    "typescript": "^5.4.3",
+    "wait-on": "^7.2.0"
+  }
+}
